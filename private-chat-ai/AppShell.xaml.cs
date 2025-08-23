@@ -1,4 +1,4 @@
-﻿namespace private_chat_ai
+﻿namespace PrivateChatAI
 {
     public partial class AppShell : Shell
     {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace private_chat_ai
+namespace PrivateChatAI
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

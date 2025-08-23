@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace private_chat_ai
+namespace PrivateChatAI
 {
     public class Program
     {

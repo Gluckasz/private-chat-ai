@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:selectors="clr-namespace:PrivateChatAI.Selectors"
+             xmlns:viewmodels="clr-namespace:PrivateChatAI.ViewModels"
+             xmlns:interfaces="clr-namespace:PrivateChatAI.Models.Interfaces"
+             x:Class="PrivateChatAI.Pages.ChatPage"
+             x:DataType="viewmodels:ChatViewModel"
+             Title="Chat">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- User Message Template -->
+            <DataTemplate x:Key="UserMessageTemplate" x:DataType="interfaces:IChatMessage">
+                <Grid Padding="10,5">
+                    <Border HorizontalOptions="End"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 15"
+                            Padding="15,10"
+                            Margin="40,5,10,5"
+                            BackgroundColor="{StaticResource Primary}">
+                        <Label Text="{Binding Content}"
+                               LineBreakMode="WordWrap"
+                               FontSize="14" />
+                    </Border>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Bot Message Template -->
+            <DataTemplate x:Key="BotMessageTemplate" x:DataType="interfaces:IChatMessage">
+                <Grid Padding="10,5">
+                    <Border HorizontalOptions="Start"
+                            StrokeThickness="0"
+                            Margin="10,5,40,5">
+                        <Label Text="{Binding Content}"
+                               LineBreakMode="WordWrap"
+                               FontSize="14" />
+                    </Border>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Message Template Selector -->
+            <selectors:MessageDataTemplateSelector x:Key="MessageTemplateSelector"
+                                                 UserMessageTemplate="{StaticResource UserMessageTemplate}"
+                                                 BotMessageTemplate="{StaticResource BotMessageTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Chat Messages Area -->
+        <ScrollView Grid.Row="0" x:Name="ChatScrollView">
+            <CollectionView x:Name="MessagesCollectionView"
+                          ItemsSource="{Binding Messages}"
+                          ItemTemplate="{StaticResource MessageTemplateSelector}"
+                          BackgroundColor="{StaticResource First}" />
+        </ScrollView>
+
+        <!-- Input Area -->
+        <Grid Grid.Row="1" 
+              Padding="10"
+              RowDefinitions="Auto,Auto">
+
+            <Border Grid.Row="0"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20">
+                <ScrollView MaximumHeightRequest="180">
+                    <Editor x:Name="MessageEntry"
+                            Placeholder="Type your message..."
+                            Text="{Binding CurrentMessage.Content}"
+                            Margin="15,5"
+                            AutoSize="TextChanges"
+                            BackgroundColor="Transparent" />
+                </ScrollView>
+            </Border>
+
+            <Button Grid.Row="1"
+                    Text="Send"
+                    Command="{Binding SendMessageCommand}"
+                    CornerRadius="20"
+                    Padding="20,10"
+                    Margin="0,10,0,0" />
+        </Grid>
+    </Grid>
+
+</ContentPage>

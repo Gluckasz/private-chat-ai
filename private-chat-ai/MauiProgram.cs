@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using PrivateChatAI.Pages;
+using PrivateChatAI.ViewModels;
 
-namespace private_chat_ai
+namespace PrivateChatAI
 {
     public static class MauiProgram
     {
@@ -15,8 +17,14 @@ namespace private_chat_ai
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Register ViewModels
+            builder.Services.AddTransient<ChatViewModel>();
+
+            // Register Pages
+            builder.Services.AddTransient<ChatPage>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

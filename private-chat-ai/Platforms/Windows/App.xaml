@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="private_chat_ai.WinUI.App"
+    x:Class="PrivateChatAI.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:private_chat_ai.WinUI">
+    xmlns:local="using:PrivateChatAI.WinUI">
 
 </maui:MauiWinUIApplication>
