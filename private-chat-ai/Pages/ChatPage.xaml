@@ -4,6 +4,7 @@
              xmlns:selectors="clr-namespace:PrivateChatAI.Selectors"
              xmlns:viewmodels="clr-namespace:PrivateChatAI.ViewModels"
              xmlns:interfaces="clr-namespace:PrivateChatAI.Models.Interfaces"
+             xmlns:converters="clr-namespace:PrivateChatAI.Converters"
              x:Class="PrivateChatAI.Pages.ChatPage"
              x:DataType="viewmodels:ChatViewModel"
              Title="">
@@ -15,6 +16,8 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:MarkdownToFormattedStringConverter x:Key="MarkdownToFormattedStringConverter" />
+
             <!-- User Message Template -->
             <DataTemplate x:Key="UserMessageTemplate" x:DataType="interfaces:IChatMessage">
                 <Grid Padding="10,5">
@@ -31,13 +34,13 @@
                 </Grid>
             </DataTemplate>
 
-            <!-- Bot Message Template -->
+            <!-- Bot Message Template with Markdown Support -->
             <DataTemplate x:Key="BotMessageTemplate" x:DataType="interfaces:IChatMessage">
                 <Grid Padding="10,5">
                     <Border HorizontalOptions="Start"
                             StrokeThickness="0"
                             Margin="10,5,40,5">
-                        <Label Text="{Binding Content}"
+                        <Label FormattedText="{Binding Content, Converter={StaticResource MarkdownToFormattedStringConverter}}"
                                LineBreakMode="WordWrap"
                                FontSize="14" />
                     </Border>
