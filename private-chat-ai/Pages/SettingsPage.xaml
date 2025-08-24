@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PrivateChatAI.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:PrivateChatAI.ViewModels"
+    Title="Settings"
+    x:DataType="viewmodels:SettingsViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <VerticalStackLayout Spacing="10">
+                <Label
+                    Text="OpenRouter API key:"
+                    FontSize="Large"
+                    FontAttributes="Bold" />
+                <Border
+                    StrokeShape="RoundRectangle 15"
+                    Padding="15,0">
+                    <Entry
+                    Text="{Binding ApiKey}"
+                    Placeholder="Enter your API key"
+                    IsPassword="True" />
+                </Border>
+                <Label 
+                    Text="Your API key is securely encrypted and stored on this device."
+                    FontSize="Small" />
+                
+                <Label 
+                    Text="To get the OpenRouter API key, visit: "
+                    FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="To get the OpenRouter API key, visit " />
+                            <Span 
+                                Text="OpenRouter"
+                                TextColor="{StaticResource HyperLink}"
+                                TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding OpenUrlCommand}"
+                                        CommandParameter="https://openrouter.ai/" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
+
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Text="Save"
+                    Command="{Binding SaveCommand}"
+                    Grid.Column="0"
+                    />
+
+                <Button
+                    Text="Clear"
+                    Command="{Binding ClearCommand}"
+                    Grid.Column="1"
+                    />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

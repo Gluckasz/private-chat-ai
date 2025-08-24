@@ -51,11 +51,11 @@ namespace PrivateChatAI
             );
 #endif
 
-            // Register ViewModels
             builder.Services.AddTransient<ChatViewModel>();
+            builder.Services.AddTransient<SettingsViewModel>();
 
-            // Register Pages
             builder.Services.AddTransient<ChatPage>();
+            builder.Services.AddTransient<SettingsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
