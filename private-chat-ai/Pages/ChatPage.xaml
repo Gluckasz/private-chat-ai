@@ -18,7 +18,7 @@
                             StrokeShape="RoundRectangle 15"
                             Padding="15,10"
                             Margin="40,5,10,5"
-                            BackgroundColor="{StaticResource Primary}">
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
                         <Label Text="{Binding Content}"
                                LineBreakMode="WordWrap"
                                FontSize="14" />
@@ -51,8 +51,7 @@
         <ScrollView Grid.Row="0" x:Name="ChatScrollView">
             <CollectionView x:Name="MessagesCollectionView"
                           ItemsSource="{Binding Messages}"
-                          ItemTemplate="{StaticResource MessageTemplateSelector}"
-                          BackgroundColor="{StaticResource First}" />
+                          ItemTemplate="{StaticResource MessageTemplateSelector}" />
         </ScrollView>
 
         <!-- Input Area -->

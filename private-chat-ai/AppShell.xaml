@@ -9,12 +9,10 @@
 
     <TabBar>
         <ShellContent
-            Title="Chat"
             Icon="chat_icon"
             ContentTemplate="{DataTemplate pages:ChatPage}"
             Route="ChatPage" />
         <ShellContent
-            Title="Chat"
             Icon="chat_icon"
             ContentTemplate="{DataTemplate pages:ChatPage}"
             Route="ChatPage" />
