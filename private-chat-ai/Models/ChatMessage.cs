@@ -4,7 +4,7 @@ using PrivateChatAI.Models.Interfaces;
 
 namespace PrivateChatAI.Models
 {
-    public class ChatMessage : IChatMessage, INotifyPropertyChanged
+    public partial class ChatMessage : IChatMessage, INotifyPropertyChanged
     {
         private string _content = string.Empty;
 

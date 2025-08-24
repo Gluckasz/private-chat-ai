@@ -1,10 +1,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PrivateChatAI.Commands;
 
 namespace PrivateChatAI.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public partial class SettingsViewModel : INotifyPropertyChanged
     {
         private bool _canClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
         private bool _canSave = false;
@@ -26,7 +27,8 @@ namespace PrivateChatAI.ViewModels
             {
                 _canClear = value;
                 OnPropertyChanged();
-                ((Command)ClearCommand).ChangeCanExecute();
+                ((SaveSettingsCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((ClearSettingsCommand)ClearCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -37,7 +39,8 @@ namespace PrivateChatAI.ViewModels
             {
                 _canSave = value;
                 OnPropertyChanged();
-                ((Command)SaveCommand).ChangeCanExecute();
+                ((SaveSettingsCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((ClearSettingsCommand)ClearCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -49,25 +52,19 @@ namespace PrivateChatAI.ViewModels
         {
             Config.Instance.PropertyChanged += OnConfigPropertyChanged;
 
-            SaveCommand = new Command(async () => await SaveSettingsAsync(), () => CanSave);
-            ClearCommand = new Command(async () => await ClearSettingsAsync(), () => CanClear);
-            OpenUrlCommand = new Command<string>(async (url) => await OpenUrlAsync(url));
-        }
+            SaveCommand = new SaveSettingsCommand(
+                () => CanSave,
+                (canSave) => CanSave = canSave,
+                (canClear) => CanClear = canClear
+            );
 
-        private async Task OpenUrlAsync(string url)
-        {
-            try
-            {
-                await Launcher.OpenAsync(url);
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Error",
-                    $"Unable to open URL: {ex.Message}",
-                    "OK"
-                );
-            }
+            ClearCommand = new ClearSettingsCommand(
+                () => CanClear,
+                (canClear) => CanClear = canClear,
+                (canSave) => CanSave = canSave
+            );
+
+            OpenUrlCommand = new OpenUrlCommand();
         }
 
         private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -81,64 +78,6 @@ namespace PrivateChatAI.ViewModels
             {
                 OnPropertyChanged(nameof(ApiKey));
                 CanClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
-            }
-        }
-
-        private async Task SaveSettingsAsync()
-        {
-            CanClear = false;
-            CanSave = false;
-            try
-            {
-                await Config.Instance.SaveApiKeyAsync();
-
-                await Shell.Current.DisplayAlert("Settings", "API key saved successfully!", "OK");
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Error",
-                    $"Failed to save settings: {ex.Message}",
-                    "OK"
-                );
-            }
-            finally
-            {
-                CanClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
-                CanSave = false;
-            }
-        }
-
-        private async Task ClearSettingsAsync()
-        {
-            CanClear = false;
-            CanSave = false;
-            try
-            {
-                bool confirmed = await Shell.Current.DisplayAlert(
-                    "Clear API Key",
-                    "Are you sure you want to clear the API key?",
-                    "Yes",
-                    "No"
-                );
-
-                if (confirmed)
-                {
-                    await Config.Instance.ClearApiKey();
-                    await Shell.Current.DisplayAlert(
-                        "Settings",
-                        "API key cleared successfully!",
-                        "OK"
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Error",
-                    $"Failed to clear settings: {ex.Message}",
-                    "OK"
-                );
             }
         }
 

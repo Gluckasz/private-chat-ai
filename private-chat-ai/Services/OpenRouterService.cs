@@ -1,5 +1,4 @@
 using System.Text.Json;
-using PrivateChatAI.Models;
 
 namespace PrivateChatAI.Services
 {

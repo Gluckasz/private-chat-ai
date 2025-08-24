@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace PrivateChatAI
 {
-    public class Config : INotifyPropertyChanged
+    public partial class Config : INotifyPropertyChanged
     {
         private static Config? _instance;
-        private static readonly Lock _lock = new Lock();
+        private static readonly Lock _lock = new();
         private string _apiKey = string.Empty;
         private string _selectedModel = string.Empty;
         private const string ApiKeyStorageKey = "PrivateChatAI_ApiKey";

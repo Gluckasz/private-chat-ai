@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Handlers;
 using PrivateChatAI.Pages;
 using PrivateChatAI.Services;
