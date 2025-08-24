@@ -7,7 +7,7 @@ namespace PrivateChatAI.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         private bool _canClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
-        private bool _canSave = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
+        private bool _canSave = false;
 
         public string ApiKey
         {
@@ -105,7 +105,7 @@ namespace PrivateChatAI.ViewModels
             finally
             {
                 CanClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
-                CanSave = string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
+                CanSave = false;
             }
         }
 

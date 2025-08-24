@@ -2,6 +2,7 @@
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Handlers;
 using PrivateChatAI.Pages;
+using PrivateChatAI.Services;
 using PrivateChatAI.ViewModels;
 
 namespace PrivateChatAI
@@ -51,6 +52,7 @@ namespace PrivateChatAI
             );
 #endif
 
+            builder.Services.AddSingleton<OpenRouterService>();
             builder.Services.AddTransient<ChatViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
 

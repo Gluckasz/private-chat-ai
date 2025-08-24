@@ -6,7 +6,12 @@
              xmlns:interfaces="clr-namespace:PrivateChatAI.Models.Interfaces"
              x:Class="PrivateChatAI.Pages.ChatPage"
              x:DataType="viewmodels:ChatViewModel"
-             Title="Chat">
+             Title="">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding SelectedModelName}"
+                     Command="{Binding SelectModelCommand}" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>
         <ResourceDictionary>

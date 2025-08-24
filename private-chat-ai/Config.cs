@@ -6,14 +6,16 @@ namespace PrivateChatAI
     public class Config : INotifyPropertyChanged
     {
         private static Config? _instance;
-        private static readonly object _lock = new object();
-        private string _apiKey;
-        private const string ApiKeyStorageKey = "ChatAI_ApiKey";
+        private static readonly Lock _lock = new Lock();
+        private string _apiKey = string.Empty;
+        private string _selectedModel = string.Empty;
+        private const string ApiKeyStorageKey = "PrivateChatAI_ApiKey";
+        private const string SelectedModelStorageKey = "PrivateChatAI_SelectedModel";
         public const string ApiKeyLoadFlag = "ApiKeyLoad";
 
         private Config()
         {
-            _ = LoadApiKeyAsync();
+            _ = LoadSettingsAsync();
         }
 
         public static Config Instance
@@ -24,10 +26,7 @@ namespace PrivateChatAI
                 {
                     lock (_lock)
                     {
-                        if (_instance == null)
-                        {
-                            _instance = new Config();
-                        }
+                        _instance ??= new Config();
                     }
                 }
                 return _instance;
@@ -47,15 +46,37 @@ namespace PrivateChatAI
             }
         }
 
-        private async Task LoadApiKeyAsync()
+        public string SelectedModel
+        {
+            get => _selectedModel;
+            set
+            {
+                if (_selectedModel != value)
+                {
+                    _selectedModel = value;
+                    OnPropertyChanged();
+                    SaveSelectedModel();
+                }
+            }
+        }
+
+        private async Task LoadSettingsAsync()
         {
             _apiKey = await SecureStorage.GetAsync(ApiKeyStorageKey) ?? string.Empty;
             OnPropertyChanged(ApiKeyLoadFlag);
+
+            _selectedModel = Preferences.Get(SelectedModelStorageKey, string.Empty);
+            OnPropertyChanged(nameof(SelectedModel));
         }
 
         public async Task SaveApiKeyAsync()
         {
             await SecureStorage.SetAsync(ApiKeyStorageKey, _apiKey);
+        }
+
+        private void SaveSelectedModel()
+        {
+            Preferences.Set(SelectedModelStorageKey, _selectedModel);
         }
 
         public Task ClearApiKey()
