@@ -69,7 +69,8 @@ namespace PrivateChatAI.ViewModels
                 () => CurrentMessage,
                 (message) => CurrentMessage = message,
                 () => IsLoading,
-                (loading) => IsLoading = loading
+                (loading) => IsLoading = loading,
+                _openRouterService
             );
 
             SelectModelCommand = new SelectModelCommand(_openRouterService, AvailableModels);

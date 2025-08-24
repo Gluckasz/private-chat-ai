@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using PrivateChatAI.Models;
 using PrivateChatAI.Models.Interfaces;
+using PrivateChatAI.Services;
 
 namespace PrivateChatAI.Commands
 {
@@ -10,7 +11,8 @@ namespace PrivateChatAI.Commands
         Func<ChatMessage> getCurrentMessage,
         Action<ChatMessage> setCurrentMessage,
         Func<bool> getIsLoading,
-        Action<bool> setIsLoading
+        Action<bool> setIsLoading,
+        OpenRouterService openRouterService
     ) : ICommand
     {
         public event EventHandler? CanExecuteChanged;
@@ -34,20 +36,17 @@ namespace PrivateChatAI.Commands
                 return;
 
             messages.Add(currentMessage);
-            string content = currentMessage.Content;
             setCurrentMessage(new ChatMessage());
 
             setIsLoading(true);
 
             try
             {
-                // TODO: Make API call
-                await Task.Delay(1500);
+                var response = await openRouterService.SendChatCompletionAsync(messages);
 
                 var botResponse = new ChatMessage
                 {
-                    Content =
-                        $"I received your message: \"{content}\". This is a placeholder response.",
+                    Content = response,
                     IsUser = false,
                     Timestamp = DateTime.Now,
                 };
