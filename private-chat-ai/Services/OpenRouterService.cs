@@ -77,17 +77,30 @@ namespace PrivateChatAI.Services
                     throw new InvalidOperationException("No model selected");
                 }
 
-                var requestBody = new
+                var messagesBody = new List<object>();
+
+                if (!string.IsNullOrWhiteSpace(Config.Instance.SystemPrompt))
                 {
-                    model = selectedModel,
-                    messages = messages
-                        .Select(msg => new
-                        {
-                            role = msg.IsUser ? "user" : "assistant",
-                            content = msg.Content,
-                        })
-                        .ToArray(),
-                };
+                    messagesBody.Add(
+                        new { role = "system", content = Config.Instance.SystemPrompt }
+                    );
+                }
+
+                var messagesToSend = messages.ToList();
+                if (messagesToSend.Count > 0 && !messagesToSend[0].IsUser)
+                {
+                    messagesToSend = [.. messagesToSend.Skip(1)];
+                }
+
+                messagesBody.AddRange(
+                    messagesToSend.Select(msg => new
+                    {
+                        role = msg.IsUser ? "user" : "assistant",
+                        content = msg.Content,
+                    })
+                );
+
+                var requestBody = new { model = selectedModel, messages = messagesBody.ToArray() };
 
                 var json = JsonSerializer.Serialize(requestBody, options);
 

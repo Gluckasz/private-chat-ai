@@ -9,8 +9,10 @@ namespace PrivateChatAI
         private static readonly Lock _lock = new();
         private string _apiKey = string.Empty;
         private string _selectedModel = string.Empty;
+        private string _systemPrompt = string.Empty;
         private const string ApiKeyStorageKey = "PrivateChatAI_ApiKey";
         private const string SelectedModelStorageKey = "PrivateChatAI_SelectedModel";
+        private const string SystemPromptStorageKey = "PrivateChatAI_SystemPrompt";
         public const string ApiKeyLoadFlag = "ApiKeyLoad";
 
         private Config()
@@ -60,6 +62,20 @@ namespace PrivateChatAI
             }
         }
 
+        public string SystemPrompt
+        {
+            get => _systemPrompt;
+            set
+            {
+                if (_systemPrompt != value)
+                {
+                    _systemPrompt = value;
+                    OnPropertyChanged();
+                    SaveSystemPrompt();
+                }
+            }
+        }
+
         private async Task LoadSettingsAsync()
         {
             _apiKey = await SecureStorage.GetAsync(ApiKeyStorageKey) ?? string.Empty;
@@ -67,6 +83,9 @@ namespace PrivateChatAI
 
             _selectedModel = Preferences.Get(SelectedModelStorageKey, string.Empty);
             OnPropertyChanged(nameof(SelectedModel));
+
+            _systemPrompt = Preferences.Get(SystemPromptStorageKey, string.Empty);
+            OnPropertyChanged(nameof(SystemPrompt));
         }
 
         public async Task SaveApiKeyAsync()
@@ -77,6 +96,11 @@ namespace PrivateChatAI
         private void SaveSelectedModel()
         {
             Preferences.Set(SelectedModelStorageKey, _selectedModel);
+        }
+
+        private void SaveSystemPrompt()
+        {
+            Preferences.Set(SystemPromptStorageKey, _systemPrompt);
         }
 
         public Task ClearApiKey()

@@ -20,6 +20,16 @@ namespace PrivateChatAI.ViewModels
             }
         }
 
+        public string SystemPrompt
+        {
+            get => Config.Instance.SystemPrompt;
+            set
+            {
+                Config.Instance.SystemPrompt = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool CanClear
         {
             get => _canClear;
@@ -27,7 +37,7 @@ namespace PrivateChatAI.ViewModels
             {
                 _canClear = value;
                 OnPropertyChanged();
-                ((SaveSettingsCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((SaveApiKeyCommand)SaveCommand).RaiseCanExecuteChanged();
                 ((ClearSettingsCommand)ClearCommand).RaiseCanExecuteChanged();
             }
         }
@@ -39,7 +49,7 @@ namespace PrivateChatAI.ViewModels
             {
                 _canSave = value;
                 OnPropertyChanged();
-                ((SaveSettingsCommand)SaveCommand).RaiseCanExecuteChanged();
+                ((SaveApiKeyCommand)SaveCommand).RaiseCanExecuteChanged();
                 ((ClearSettingsCommand)ClearCommand).RaiseCanExecuteChanged();
             }
         }
@@ -52,7 +62,7 @@ namespace PrivateChatAI.ViewModels
         {
             Config.Instance.PropertyChanged += OnConfigPropertyChanged;
 
-            SaveCommand = new SaveSettingsCommand(
+            SaveCommand = new SaveApiKeyCommand(
                 () => CanSave,
                 (canSave) => CanSave = canSave,
                 (canClear) => CanClear = canClear
@@ -78,6 +88,10 @@ namespace PrivateChatAI.ViewModels
             {
                 OnPropertyChanged(nameof(ApiKey));
                 CanClear = !string.IsNullOrWhiteSpace(Config.Instance.ApiKey);
+            }
+            else if (e.PropertyName == nameof(Config.SystemPrompt))
+            {
+                OnPropertyChanged(nameof(SystemPrompt));
             }
         }
 

@@ -25,7 +25,7 @@
                 <Label 
                     Text="Your API key is securely encrypted and stored on this device."
                     FontSize="Small" />
-                
+
                 <Label 
                     Text="To get the OpenRouter API key, visit: "
                     FontSize="Small">
@@ -64,6 +64,25 @@
                     Grid.Column="1"
                     />
             </Grid>
+
+            <VerticalStackLayout Spacing="10">
+                <Label
+                    Text="System Prompt:"
+                    FontSize="Large"
+                    FontAttributes="Bold" />
+                            <Border
+                    StrokeShape="RoundRectangle 15"
+                    Padding="15">
+                                <Editor
+                        Text="{Binding SystemPrompt}"
+                        Placeholder="Enter your custom system prompt (optional)"
+                        HeightRequest="120"
+                        AutoSize="TextChanges" />
+                            </Border>
+                            <Label 
+                    Text="Customize the AI's behavior and personality with a system prompt. It will apply to all chats."
+                    FontSize="Small" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
     

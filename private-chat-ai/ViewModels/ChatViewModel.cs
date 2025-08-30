@@ -15,6 +15,8 @@ namespace PrivateChatAI.ViewModels
         private bool _isLoading = false;
         private readonly OpenRouterService _openRouterService;
 
+        public const string WelcomeMessage = "Hello! How can I help you today?";
+
         public ObservableCollection<IChatMessage> Messages { get; } = [];
         public ObservableCollection<string> AvailableModels { get; } = [];
 
@@ -81,7 +83,7 @@ namespace PrivateChatAI.ViewModels
             Messages.Add(
                 new ChatMessage
                 {
-                    Content = "Hello! How can I help you today?",
+                    Content = WelcomeMessage,
                     IsUser = false,
                     Timestamp = DateTime.Now,
                 }

@@ -2,7 +2,7 @@ using System.Windows.Input;
 
 namespace PrivateChatAI.Commands
 {
-    public partial class SaveSettingsCommand(
+    public partial class SaveApiKeyCommand(
         Func<bool> getCanSave,
         Action<bool> setCanSave,
         Action<bool> setCanClear
